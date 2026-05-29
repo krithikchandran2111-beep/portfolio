@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krithik Chandran | Creative Portfolio</title>
+    <meta name="description" content="Creative Editor & Designer | Video Editing | Motion Graphics | Graphic Design">
+    <meta name="keywords" content="Video Editor, Graphic Designer, Motion Graphics, Kerala Designer">
+    <meta name="author" content="Krithik Chandran">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080808;
+            --surface: #111111;
+            --surface2: #181818;
+            --text: #f0ede8;
+            --muted: rgba(240,237,232,0.45);
+            --border: rgba(240,237,232,0.08);
+            --border-bright: rgba(240,237,232,0.18);
+            --accent: #ff5c35;
+            --accent2: #ffb347;
+            --accent-glow: rgba(255,92,53,0.25);
+            --font-display: 'Bebas Neue', cursive;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.5s, color 0.5s;
+            overflow-x: hidden;
+        }
+
+        /* ── NOISE GRAIN OVERLAY ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ── SPLASH ── */
+        #logo-splash {
+            position: fixed; inset: 0;
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+            animation: splashOut 0.8s ease 2.2s forwards;
+        }
+        #logo-splash img {
+            max-width: 360px; width: 70%;
+            animation: splashIn 1.8s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes splashIn {
+            0% { opacity:0; transform: scale(0.7) rotate(-4deg); }
+            60% { opacity:1; transform: scale(1.04) rotate(1deg); }
+            100% { opacity:1; transform: scale(1) rotate(0); }
+        }
+        @keyframes splashOut {
+            to { opacity:0; pointer-events:none; }
+        }
+
+        /* ── NAV ── */
+        nav {
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(8,8,8,0.75);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.5s;
+        }
+
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .logo-text span { color: var(--accent); }
+        .logo-text:hover { color: var(--accent); }
+
+        .nav-links { display: flex; align-items: center; gap: 6px; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 7px 14px;
+            border-radius: 4px;
+            transition: all 0.25s;
+        }
+        .nav-links a:hover {
+            color: var(--text);
+            background: var(--border);
+        }
+
+        .hamburger { display: none; font-size: 26px; cursor: pointer; color: var(--text); }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: row; justify-content: space-between; }
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute; top: 60px; left: 0; width: 100%;
+                background: var(--bg);
+                flex-direction: column; align-items: center;
+                display: none; padding: 20px 0;
+                border-top: 1px solid var(--border);
+                gap: 4px;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links a { width: 100%; text-align: center; padding: 12px 20px; }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100svh;
+            display: flex; flex-direction: column;
+            align-items: flex-start; justify-content: flex-end;
+            padding: 0 6% 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Desktop: mirrored landscape image */
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url('https://i.postimg.cc/vTKDR6HJ/banner-2.png');
+            background-position: center top;
+            background-size: cover;
+            background-repeat: no-repeat;
+            transform: scaleX(-1);
+            z-index: 0;
+        }
+
+        /* Dark overlay — bottom-heavy for desktop (text at bottom) */
+        .hero::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(8,8,8,0.96) 0%,
+                rgba(8,8,8,0.55) 38%,
+                rgba(8,8,8,0.12) 100%
+            );
+            z-index: 1;
+        }
+
+        /* Hero content always above overlays */
+        .hero-content {
+            position: relative; z-index: 3;
+            max-width: 860px;
+            width: 100%;
+        }
+
+        /* Eyebrow */
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: clamp(9px, 1.4vw, 12px);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        /* Headline — fluid from mobile to desktop */
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 8vw, 8rem);
+            line-height: 0.95;
+            letter-spacing: clamp(2px, 0.5vw, 6px);
+            color: #fff;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
+        }
+        .hero h1 em { font-style: normal; color: var(--accent); }
+
+        /* Subtitle */
+        .hero-sub {
+            font-size: clamp(0.82rem, 1.8vw, 1.15rem);
+            color: rgba(255,255,255,0.65);
+            font-weight: 300;
+            max-width: 480px;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.9s forwards;
+        }
+
+        /* CTA — kept intentionally small */
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: clamp(16px, 2.5vw, 28px);
+            padding: 9px 20px;
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.1s forwards;
+            transition: all 0.3s;
+        }
+        .hero-cta:hover {
+            background: #ff7a5a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255,92,53,0.4);
+        }
+
+        /* Scroll hint */
+        .hero-scroll {
+            position: absolute; bottom: 32px; right: 6%;
+            display: flex; align-items: center; gap: 12px;
+            color: rgba(255,255,255,0.4);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            z-index: 3;
+            animation: fadeUp 1s ease 1.4s forwards;
+            opacity: 0;
+        }
+        .hero-scroll::before {
+            content: '';
+            width: 40px; height: 1px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* ── TABLET (≤768px): portrait image, text at TOP ── */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 100svh;
+                justify-content: flex-start;
+                padding: clamp(72px, 14vw, 100px) 5% 40px;
+            }
+            /* Switch to portrait image, mirrored */
+            .hero::before {
+                background-image: url('https://i.postimg.cc/9fFzsSs9/Untitled-1.png');
+                background-position: center center;
+                background-size: cover;
+                transform: scaleX(-1);
+            }
+            /* Overlay: strong at top so text is readable, fades in middle */
+            .hero::after {
+                background: linear-gradient(
+                    to bottom,
+                    rgba(8,8,8,0.93) 0%,
+                    rgba(8,8,8,0.6) 30%,
+                    rgba(8,8,8,0.15) 60%,
+                    rgba(8,8,8,0.5) 100%
+                );
+            }
+            .hero-content { max-width: 100%; }
+            .hero-sub { max-width: 88%; font-size: clamp(0.82rem, 2.2vw, 1rem); }
+            .hero h1 { font-size: clamp(2.4rem, 9vw, 4.5rem); margin-bottom: 12px; }
+            .hero-eyebrow { font-size: clamp(9px, 2vw, 11px); margin-bottom: 10px; }
+            .hero-cta { font-size: 10px; padding: 8px 18px; margin-top: 14px; }
+            .hero-scroll { display: none; }
+        }
+
+        /* ── MOBILE (≤480px) ── */
+        @media (max-width: 480px) {
+            .hero {
+                padding-top: clamp(68px, 18vw, 90px);
+                padding-left: 5%; padding-right: 5%;
+            }
+            .hero h1 { font-size: clamp(2.2rem, 11vw, 3.2rem); letter-spacing: 2px; }
+            .hero-eyebrow { font-size: 9px; letter-spacing: 3px; }
+            .hero-sub { max-width: 100%; font-size: 0.82rem; line-height: 1.6; }
+            .hero-cta { font-size: 10px; padding: 8px 16px; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bio slide-in */
+        .bio-wrapper {
+            padding: 0 6% 80px;
+            background: var(--bg);
+        }
+        .bio-box {
+            max-width: 900px;
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 40px 48px;
+            opacity: 0;
+            transform: translateX(60px);
+            animation: slideRight 1s cubic-bezier(0.22,1,0.36,1) 1.6s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+        .bio-box::before {
+            content: '';
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,92,53,0.06), transparent);
+            transition: 0.7s;
+        }
+        .bio-box:hover::before { left: 100%; }
+        .bio-box:hover { border-color: var(--accent); box-shadow: 0 0 40px rgba(255,92,53,0.12); }
+        @keyframes slideRight {
+            to { opacity:1; transform: translateX(0); }
+        }
+        .bio-box p {
+            font-size: 1.05rem; line-height: 1.95;
+            color: var(--text);
+            letter-spacing: 0.2px;
+        }
+        /* ── BIO WORD ANIMATION ── */
+        .bio-word {
+            display: inline;
+            opacity: 0;
+            transform: translateY(5px);
+            animation: bioWordIn 0.3s ease forwards;
+        }
+        @keyframes bioWordIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .bio-wrapper { padding: 0 5% 60px; }
+            .bio-box { padding: 28px 24px; }
+        }
+
+        /* ── SECTION STYLES ── */
+        section.panel, .panel {
+            padding: 80px 6%;
+        }
+        .section-header {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            margin-bottom: 50px;
+            flex-wrap: wrap; gap: 12px;
+        }
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+        .section-link-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            border: 1px solid var(--border-bright);
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .section-link-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* ── WHAT I DO ── */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+        @media (max-width: 1024px) { .profiles-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 600px) { .profiles-grid { grid-template-columns: 1fr; } }
+
+        .profile-card {
+            background: var(--surface);
+            padding: 44px 32px;
+            text-align: left;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: default;
+        }
+        .profile-card::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0;
+            width: 0; height: 3px;
+            background: var(--accent);
+            transition: width 0.4s;
+        }
+        .profile-card:hover { background: var(--surface2); transform: translateY(-4px); }
+        .profile-card:hover::after { width: 100%; }
+        .profile-num {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            color: var(--accent);
+            opacity: 0.15;
+            line-height: 1;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+        .profile-icon-wrap {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            transition: transform 0.4s;
+        }
+        .profile-card:hover .profile-icon-wrap { transform: scale(1.15) rotate(-5deg); }
+        .profile-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .profile-card p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); }
+
+        /* ── TOOLS ── */
+        .tools-bg { background: var(--surface); }
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2px;
+        }
+        .soft-card {
+            background: var(--bg);
+            padding: 28px 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            position: relative; overflow: hidden;
+            cursor: default;
+        }
+        .soft-card::before {
+            content: '';
+            position: absolute; top:0; left:-100%; width:100%; height:100%;
+            background: linear-gradient(90deg, transparent, rgba(255,92,53,0.08), transparent);
+            transition: 0.6s;
+        }
+        .soft-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 16px 48px rgba(255,92,53,0.2); }
+        .soft-card:hover::before { left: 100%; }
+        .soft-card img { width: 52px; height: 52px; object-fit: contain; margin-bottom: 10px; transition: transform 0.3s; }
+        .soft-card:hover img { transform: scale(1.15) rotate(5deg); }
+        .soft-card p { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+        .soft-card:hover p { color: var(--accent); }
+
+        /* Clients */
+        .clients-bg { background: var(--bg); }
+        .clients-section { padding: 80px 6%; }
+        .clients-section .soft-card img { width: 72px; height: 72px; object-fit: contain; border-radius: 8px; }
+
+        /* ── WORK GRID ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
+        .work-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s;
+        }
+        .work-item::after {
+            content: 'VIEW';
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 8px;
+            color: #fff;
+            background: rgba(255,92,53,0);
+            transition: background 0.4s;
+            z-index: 2;
+        }
+        .work-item:hover { transform: scale(1.01); border-color: var(--accent); }
+        .work-item:hover::after { background: rgba(255,92,53,0.55); }
+        .work-item img { width: 100%; height: auto; display: block; }
+        .work-item .image-wrapper {
+            width: 100%; height: 280px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--surface); overflow: hidden;
+        }
+        .work-item .image-wrapper img {
+            max-width: 100%; max-height: 100%;
+            width: auto; height: auto;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .work-item:hover .image-wrapper img { transform: scale(1.07); }
+
+        .video-container {
+            position: relative; width: 100%; height: 0; padding-bottom: 56.25%; overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute; top:0; left:0; width:100%; height:100%; border:0; object-fit: cover;
+        }
+
+        /* ── MODAL ── */
+        #modal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.4s;
+            z-index: 9000; padding: 24px;
+        }
+        #modal.active { display: flex; opacity: 1; }
+        .modal-content {
+            max-width: 90%; max-height: 88vh;
+            border-radius: 6px; overflow: hidden;
+            animation: modalZoom 0.35s cubic-bezier(0.2,0.8,0.2,1);
+            border: 1px solid var(--border-bright);
+        }
+        @keyframes modalZoom {
+            from { transform: scale(0.88) translateY(30px); opacity:0; }
+            to { transform: scale(1) translateY(0); opacity:1; }
+        }
+        .modal-content iframe, .modal-content img {
+            width: 100%; height: auto; max-height: 88vh;
+            border-radius: 6px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 60px 6%;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .footer-name {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: 6px;
+            margin-bottom: 36px;
+            color: var(--text);
+        }
+        .footer-name span { color: var(--accent); }
+        .social-icons {
+            display: flex; justify-content: center; gap: 16px; margin-bottom: 32px;
+        }
+        .social-icons a {
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border-bright);
+            border-radius: 4px;
+            color: var(--muted);
+            transition: all 0.3s;
+        }
+        .social-icons a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-glow);
+            transform: translateY(-4px);
+        }
+        .social-icons a svg { width: 20px; height: 20px; }
+        footer p {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* ── BG EFFECTS ── */
+        .bg-orbs { position: fixed; inset:0; pointer-events: none; z-index: -2; overflow: hidden; }
+        .orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(130px); opacity: 0.18;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+        .orb.a { width: 600px; height: 600px; background: radial-gradient(circle, #ff5c35, transparent); top: -100px; left: -150px; animation-delay: 0s; }
+        .orb.b { width: 400px; height: 400px; background: radial-gradient(circle, #ffb347, transparent); bottom: 10%; right: -80px; animation-delay: 8s; }
+        .orb.c { width: 300px; height: 300px; background: radial-gradient(circle, #ff5c35, transparent); top: 55%; left: 40%; animation-delay: 14s; }
+        @keyframes floatOrb {
+            0%,100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-70px) translateX(50px); }
+        }
+
+        /* ── DIVIDER LINE ── */
+        .hr-line { width: 100%; height: 1px; background: var(--border); margin: 0; }
+
+        /* ── VIDEO LABEL ── */
+        .video-label {
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .behance-video-card:hover .video-label { color: var(--accent); }
+
+        /* ── SUBSECTION HEADER ── */
+        .subsection-header {
+            display: flex; align-items: center; flex-wrap: wrap; gap: 16px;
+            margin: 60px 0 28px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        .subsection-label {
+            font-family: var(--font-mono);
+            font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            padding: 4px 10px; border-radius: 3px;
+        }
+        .subsection-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            letter-spacing: 3px;
+            flex: 1;
+        }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(6px);
+            transition: opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease;
+        }
+        .reveal.show { opacity:1; transform:none; filter:none; }
+
+        /* ── FLOATING ELEMENTS ── */
+        .floating-elements { position: fixed; inset:0; pointer-events:none; z-index:-1; }
+        .float { position: absolute; width: 36px; opacity: 0.08; animation: floatMove 14s ease-in-out infinite, rotateSlow 22s linear infinite; }
+        .f1 { top: 20%; left: 8%; }
+        .f2 { top: 65%; left: 18%; }
+        .f3 { top: 28%; right: 12%; }
+        .f4 { bottom: 22%; right: 22%; }
+        @keyframes floatMove { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-40px); } }
+        @keyframes rotateSlow { 0% { rotate: 0deg; } 100% { rotate: 360deg; } }
+
+        /* mobile tweaks */
+        @media (max-width: 768px) {
+            .panel, section.panel, .clients-section { padding: 60px 5%; }
+            .profiles-grid { grid-template-columns: 1fr 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 480px) {
+            .profiles-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Splash -->
+<div id="logo-splash">
+    <img src="https://i.postimg.cc/XqTsSMm6/kc-logo-wh.png" alt="KC Creations Logo">
+</div>
+
+<!-- BG FX -->
+<div class="bg-orbs">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+</div>
+<div class="floating-elements">
+    <img src="https://img.icons8.com/ios-filled/100/f0f0f0/triangle.png" class="float f1" alt="">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/circle.png" class="float f2" alt="">
+    <img src="https://img.icons8.com/ios-filled/100/aaaaaa/square.png" class="float f3" alt="">
+    <img src="https://img.icons8.com/ios-filled/100/f0f0f0/pentagon.png" class="float f4" alt="">
+</div>
+
+<!-- NAV -->
+<nav>
+    <a href="#top" class="logo-text">KC<span>.</span></a>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="nav-links" id="navMenu">
+        <a href="#video">Video Editing</a>
+        <a href="#graphics">Graphic Design</a>
+        <a href="#contact">Contact</a>
+        <span class="toggle" style="display:none"></span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+    <div class="hero-content">
+        <p class="hero-eyebrow">Creative Editor &amp; Designer — Kerala, India</p>
+        <h1>Bringing<br>Stories to<br><em>Life.</em></h1>
+        <p class="hero-sub">Video editing, motion graphics, and graphic design that captures attention and communicates powerfully.</p>
+        <a href="#video" class="hero-cta">
+            View Work
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+    </div>
+    <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<!-- BIO -->
+<div class="bio-wrapper">
+    <div class="bio-box">
+        <p id="bio-text"></p>
+    </div>
+</div>
+
+<div class="hr-line"></div>
+
+<!-- WHAT I DO -->
+<div class="panel" id="about">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Expertise</p>
+            <h2 class="section-title reveal">WHAT I DO</h2>
+        </div>
+    </div>
+    <div class="profiles-grid">
+        <div class="profile-card reveal">
+            <div class="profile-num">01</div>
+            <div class="profile-icon-wrap">🎨</div>
+            <h3>Graphic Designer</h3>
+            <p>Creating stunning visual identities, posters, branding materials, and social media graphics that capture attention and communicate effectively.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">02</div>
+            <div class="profile-icon-wrap">🎬</div>
+            <h3>Video Editor</h3>
+            <p>Crafting compelling video narratives with professional editing, color grading, and seamless transitions that engage audiences.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">03</div>
+            <div class="profile-icon-wrap">🎞️</div>
+            <h3>Motion Graphics</h3>
+            <p>Bringing designs to life with dynamic animations, kinetic typography, and eye-catching motion elements for digital content.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">04</div>
+            <div class="profile-icon-wrap">🎭</div>
+            <h3>3D Animator</h3>
+            <p>Designing and animating 3D models, characters, and environments with realistic lighting and textures for immersive experiences.</p>
+        </div>
+    </div>
+</div>
+
+<div class="hr-line"></div>
+
+<!-- TOOLS -->
+<div class="panel tools-bg">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Arsenal</p>
+            <h2 class="section-title reveal">TOOLS I USE</h2>
+        </div>
+    </div>
+    <div class="software-grid">
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/adobe-photoshop.png" alt="Photoshop">
+            <p>Photoshop</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/adobe-illustrator.png" alt="Illustrator">
+            <p>Illustrator</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/adobe-premiere-pro.png" alt="Premiere Pro">
+            <p>Premiere Pro</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/adobe-after-effects.png" alt="After Effects">
+            <p>After Effects</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/blender-3d.png" alt="Blender">
+            <p>Blender</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/adobe-xd.png" alt="Adobe XD">
+            <p>Adobe XD</p>
+        </div>
+    </div>
+</div>
+
+<div class="hr-line"></div>
+
+<!-- CLIENTS -->
+<div class="clients-section clients-bg">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Trusted By</p>
+            <h2 class="section-title reveal">CLIENTS</h2>
+        </div>
+    </div>
+    <div class="software-grid">
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/Hx93YWv8/lion-ads.png" alt="Lionster">
+            <p>Lionster</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/ZqrxHKSf/mile-stone.png" alt="Milestone IT">
+            <p>Milestone IT</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/QNn1pWTz/logo-01.png" alt="Boby Group">
+            <p>Boby Group</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/qRqgRjjX/login-log-file-01.jpg" alt="Login">
+            <p>Login</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/1tFpkfpk/Asset-1-2x-100.jpg" alt="Vyshna's Physiozone">
+            <p>Physiozone</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://i.postimg.cc/65yVShKd/tag4.png" alt="Tag Ads">
+            <p>TDA Tag 4</p>
+        </div>
+    </div>
+</div>
+
+<div class="hr-line"></div>
+
+<!-- VIDEO WORK -->
+<div class="panel" id="video">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Motion</p>
+            <h2 class="section-title reveal">VIDEO EDITING</h2>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <a href="https://youtube.com/@kccreations2111?si=cwU94-HMJuIiWauE" target="_blank" class="section-link-btn reveal">
+                YouTube
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+            <a href="https://www.behance.net/gallery/197699011/portfolio" target="_blank" class="section-link-btn reveal">
+                Behance
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Streamable clips -->
+    <div class="grid">
+        <div class="work-item reveal" onclick="openModal('https://streamable.com/e/4zjzk7')">
+            <div class="video-container">
+                <iframe src="https://streamable.com/e/4zjzk7?muted=1" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="work-item reveal" onclick="openModal('https://streamable.com/e/0ts1ch')">
+            <div class="video-container">
+                <iframe src="https://streamable.com/e/0ts1ch?muted=1" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Behance Portfolio Videos -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Portfolio Reel</h3>
+        <a href="https://www.behance.net/gallery/197699011/portfolio" target="_blank" class="section-link-btn">
+            View on Behance
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal behance-video-card">
+            <div class="video-container">
+                <iframe src="https://www-ccv.adobe.io/v1/player/ccv/Ekpohf5vIYK/embed?api_key=behance1&bgcolor=%23111111" allowfullscreen allow="autoplay"></iframe>
+            </div>
+            <div class="video-label">Krithik Chandran — Portfolio Reel</div>
+        </div>
+        <div class="work-item reveal behance-video-card">
+            <div class="video-container">
+                <iframe src="https://www-ccv.adobe.io/v1/player/ccv/Ptrp3Fycnjs/embed?api_key=behance1&bgcolor=%23111111" allowfullscreen allow="autoplay"></iframe>
+            </div>
+            <div class="video-label">Krithik Chandran — Showreel</div>
+        </div>
+    </div>
+</div>
+
+<div class="hr-line"></div>
+
+<!-- GRAPHIC DESIGN -->
+<div class="panel" id="graphics">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Visual</p>
+            <h2 class="section-title reveal">GRAPHIC DESIGN</h2>
+        </div>
+        <a href="https://www.behance.net/krithikayiniku" target="_blank" class="section-link-btn reveal">
+            Behance Profile
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+    </div>
+
+    <!-- Vishu Posters -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Vishu Posters</h3>
+        <a href="https://www.behance.net/gallery/247759635/vishu-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg" alt="Vishu Poster 1"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg" alt="Vishu Poster 2"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg" alt="Vishu Poster 3"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg" alt="Vishu Poster 4"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg" alt="Vishu Poster 5"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg" alt="Vishu Poster 6"></div></div>
+    </div>
+
+    <!-- Easter Wish Poster -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Easter Wish Poster</h3>
+        <a href="https://www.behance.net/gallery/247493121/Easter-wish-poster" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg" alt="Easter Poster 1"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg" alt="Easter Poster 2"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg" alt="Easter Poster 3"></div></div>
+    </div>
+
+    <!-- Vijayadashami Posters -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Vijayadashami Posters</h3>
+        <a href="https://www.behance.net/gallery/235848925/Vijayadashami-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg" alt="Vijayadashami Poster 1"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg" alt="Vijayadashami Poster 2"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg" alt="Vijayadashami Poster 3"></div></div>
+    </div>
+
+    <!-- Eid Mubarak Poster -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Eid Mubarak Poster</h3>
+        <a href="https://www.behance.net/gallery/246187285/eid-mubarak-poster" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg" alt="Eid Poster 1"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg" alt="Eid Poster 2"></div></div>
+    </div>
+
+    <!-- Special Day Posters -->
+    <div class="subsection-header reveal">
+        <span class="subsection-label">Behance Project</span>
+        <h3 class="subsection-title">Special Day Posters</h3>
+        <a href="https://www.behance.net/gallery/217123507/spical-day-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+    </div>
+    <div class="grid">
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg" alt="Special Day Poster 1"></div></div>
+        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg" alt="Special Day Poster 2"></div></div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+    <h2 class="footer-name">KRITHIK<br>CHAN<span>DRAN</span></h2>
+    <div class="social-icons">
+        <a href="https://www.instagram.com/kc_creation1121/" target="_blank" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61585485728810" target="_blank" title="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        </a>
+        <a href="https://wa.me/919876543210?text=Hello%20I%20am%20interested%20in%20your%20services" target="_blank" title="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        </a>
+        <a href="mailto:krithikchandran2111@gmail.com" title="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </a>
+    </div>
+    <p>© 2026 Krithik Chandran — Built with KC Creations</p>
+</footer>
+
+<!-- MODAL -->
+<div id="modal" onclick="closeModal()"></div>
+
+<script>
+    // Bio typewriter
+    // Fast word-by-word reveal — no lag, no per-character spam
+    const bioText = "Hi, I'm Krithik Chandran — a passionate Creative Editor & Designer based in Kerala, India. I specialize in video editing, motion graphics, and graphic design, crafting visuals that tell stories and make brands unforgettable. With a sharp eye for detail and a love for bold aesthetics, I blend technical skill with creative vision to produce work that genuinely stands out.";
+    const bioElement = document.getElementById('bio-text');
+    const words = bioText.split(' ');
+    const DELAY_START = 1600;   // ms after page load before first word
+    const WORD_INTERVAL = 55;   // ms between each word
+
+    words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'bio-word';
+        span.textContent = word + ' ';
+        span.style.animationDelay = (DELAY_START + i * WORD_INTERVAL) + 'ms';
+        bioElement.appendChild(span);
+    });
+
+    // Mouse parallax
+    document.addEventListener('mousemove', e => {
+        document.querySelectorAll('.float').forEach((el, i) => {
+            const speed = (i + 1) * 0.018;
+            el.style.transform = `translate(${e.clientX * speed}px, ${e.clientY * speed}px)`;
+        });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+        el.style.transitionDelay = `${i * 60}ms`;
+        observer.observe(el);
+    });
+
+    // Modal
+    const modal = document.getElementById('modal');
+    function openModal(src) {
+        modal.classList.add('active');
+        modal.innerHTML = `<div class="modal-content"><iframe src="${src}?autoplay=1" allowfullscreen></iframe></div>`;
+    }
+    function openImg(src) {
+        modal.classList.add('active');
+        modal.innerHTML = `<div class="modal-content"><img src="${src}" alt="Portfolio Work"></div>`;
+    }
+    function closeModal() {
+        modal.classList.remove('active');
+        setTimeout(() => { modal.innerHTML = ''; }, 400);
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Hamburger
+    function toggleMenu() {
+        document.getElementById('navMenu').classList.toggle('active');
+    }
+
+
+    // Theme toggle removed — dark mode only
+</script>
+</body>
+</html>
