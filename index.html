@@ -134,30 +134,22 @@
             padding: 0 6% 80px;
             position: relative;
             overflow: hidden;
+            background: var(--bg);
         }
-
-        /* Desktop: mirrored landscape image */
+        /* Ambient glow background instead of image */
         .hero::before {
             content: '';
             position: absolute; inset: 0;
-            background-image: url('https://i.postimg.cc/vTKDR6HJ/banner-2.png');
-            background-position: center top;
-            background-size: cover;
-            background-repeat: no-repeat;
-            transform: scaleX(-1);
+            background:
+                radial-gradient(ellipse 70% 60% at 15% 70%, rgba(255,92,53,0.18) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 40% at 80% 20%, rgba(255,179,71,0.10) 0%, transparent 60%);
             z-index: 0;
         }
-
-        /* Dark overlay — bottom-heavy for desktop (text at bottom) */
+        /* Bottom fade overlay */
         .hero::after {
             content: '';
             position: absolute; inset: 0;
-            background: linear-gradient(
-                to top,
-                rgba(8,8,8,0.96) 0%,
-                rgba(8,8,8,0.55) 38%,
-                rgba(8,8,8,0.12) 100%
-            );
+            background: linear-gradient(to top, rgba(8,8,8,0.7) 0%, transparent 60%);
             z-index: 1;
         }
 
@@ -246,29 +238,12 @@
             background: rgba(255,255,255,0.25);
         }
 
-        /* ── TABLET (≤768px): portrait image, text at TOP ── */
+        /* ── TABLET (≤768px) ── */
         @media (max-width: 768px) {
             .hero {
                 min-height: 100svh;
                 justify-content: flex-start;
                 padding: clamp(72px, 14vw, 100px) 5% 40px;
-            }
-            /* Switch to portrait image, mirrored */
-            .hero::before {
-                background-image: url('https://i.postimg.cc/9fFzsSs9/Untitled-1.png');
-                background-position: center center;
-                background-size: cover;
-                transform: scaleX(-1);
-            }
-            /* Overlay: strong at top so text is readable, fades in middle */
-            .hero::after {
-                background: linear-gradient(
-                    to bottom,
-                    rgba(8,8,8,0.93) 0%,
-                    rgba(8,8,8,0.6) 30%,
-                    rgba(8,8,8,0.15) 60%,
-                    rgba(8,8,8,0.5) 100%
-                );
             }
             .hero-content { max-width: 100%; }
             .hero-sub { max-width: 88%; font-size: clamp(0.82rem, 2.2vw, 1rem); }
@@ -389,7 +364,7 @@
         /* ── WHAT I DO ── */
         .profiles-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 2px;
         }
         @media (max-width: 1024px) { .profiles-grid { grid-template-columns: repeat(2,1fr); } }
@@ -470,6 +445,34 @@
         .clients-bg { background: var(--bg); }
         .clients-section { padding: 80px 6%; }
         .clients-section .soft-card img { width: 72px; height: 72px; object-fit: contain; border-radius: 8px; }
+
+        /* Tools sub-label */
+        .tools-sub-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        /* AI tools icon fallback — text badge */
+        .soft-card .ai-badge {
+            width: 52px; height: 52px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin: 0 auto 10px;
+            color: #fff;
+        }
+        .ai-badge.chatgpt  { background: linear-gradient(135deg,#10a37f,#1a7f64); }
+        .ai-badge.claude   { background: linear-gradient(135deg,#c96442,#8b3a20); }
+        .ai-badge.seedance { background: linear-gradient(135deg,#6c3fff,#3b1fa8); }
+        .ai-badge.kling    { background: linear-gradient(135deg,#ff4fa3,#a0006c); }
+        .ai-badge.eleven   { background: linear-gradient(135deg,#f5a623,#c47a00); }
 
         /* ── WORK GRID ── */
         .grid {
@@ -684,6 +687,118 @@
         @media (max-width: 480px) {
             .profiles-grid { grid-template-columns: 1fr; }
         }
+        /* ── FILMSTRIP (Apple TV style) ── */
+        .filmstrip-wrapper {
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+        }
+        .filmstrip-track {
+            width: 100%;
+            overflow: hidden;
+            /* Edge fade masks */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+        }
+        .filmstrip-inner {
+            display: flex;
+            gap: 14px;
+            width: max-content;
+            will-change: transform;
+        }
+
+        /* Scroll LEFT animation */
+        @keyframes scrollLeft {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* Scroll RIGHT animation */
+        @keyframes scrollRight {
+            0%   { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+        .scroll-left  { animation: scrollLeft  38s linear infinite; }
+        .scroll-right { animation: scrollRight 38s linear infinite; }
+
+        /* Pause on hover */
+        .filmstrip-track:hover .filmstrip-inner { animation-play-state: paused; }
+
+        /* Individual card */
+        .film-card {
+            position: relative;
+            flex-shrink: 0;
+            width: clamp(200px, 22vw, 300px);
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s;
+        }
+        .film-card:hover {
+            transform: scale(1.06);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent);
+            z-index: 5;
+        }
+        .film-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .film-card:hover img { transform: scale(1.08); }
+
+        /* Label overlay on hover */
+        .film-label {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 20px 12px 12px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .film-card:hover .film-label { opacity: 1; }
+
+        /* VIEW badge on hover */
+        .film-card::after {
+            content: 'VIEW';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+            color: #fff;
+            background: rgba(255,92,53,0.75);
+            padding: 8px 18px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+        }
+        .film-card:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Mobile: smaller cards, slower scroll */
+        @media (max-width: 768px) {
+            .film-card { width: clamp(160px, 42vw, 240px); }
+            .scroll-left, .scroll-right { animation-duration: 28s; }
+        }
+        @media (max-width: 480px) {
+            .film-card { width: clamp(140px, 52vw, 200px); }
+            .filmstrip-wrapper { gap: 12px; }
+        }
+
     </style>
 </head>
 <body>
@@ -711,7 +826,6 @@
     <a href="#top" class="logo-text">KC<span>.</span></a>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="nav-links" id="navMenu">
-        <a href="#video">Video Editing</a>
         <a href="#graphics">Graphic Design</a>
         <a href="#contact">Contact</a>
         <span class="toggle" style="display:none"></span>
@@ -721,10 +835,10 @@
 <!-- HERO -->
 <section class="hero" id="top">
     <div class="hero-content">
-        <p class="hero-eyebrow">Creative Editor &amp; Designer — Kerala, India</p>
+        <p class="hero-eyebrow">Creative Designer &amp; Digital Strategist — Kerala, India</p>
         <h1>Bringing<br>Stories to<br><em>Life.</em></h1>
-        <p class="hero-sub">Video editing, motion graphics, and graphic design that captures attention and communicates powerfully.</p>
-        <a href="#video" class="hero-cta">
+        <p class="hero-sub">Video editing, graphic design, social media management, digital marketing, photography & videography — all under one creative roof.</p>
+        <a href="#graphics" class="hero-cta">
             View Work
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </a>
@@ -768,11 +882,36 @@
             <h3>Motion Graphics</h3>
             <p>Bringing designs to life with dynamic animations, kinetic typography, and eye-catching motion elements for digital content.</p>
         </div>
+
         <div class="profile-card reveal">
-            <div class="profile-num">04</div>
-            <div class="profile-icon-wrap">🎭</div>
-            <h3>3D Animator</h3>
-            <p>Designing and animating 3D models, characters, and environments with realistic lighting and textures for immersive experiences.</p>
+            <div class="profile-num">05</div>
+            <div class="profile-icon-wrap">📱</div>
+            <h3>Social Media Management</h3>
+            <p>Managing and growing brand presence across Instagram, Facebook, and other platforms with engaging content strategies and consistent visual identity.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">06</div>
+            <div class="profile-icon-wrap">🌐</div>
+            <h3>Website Management</h3>
+            <p>Maintaining, updating, and optimising websites for performance, design consistency, and seamless user experience across all devices.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">07</div>
+            <div class="profile-icon-wrap">📊</div>
+            <h3>Digital Marketing</h3>
+            <p>Planning and executing result-driven digital campaigns — from SEO and paid ads to content marketing — that build brand awareness and drive growth.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">08</div>
+            <div class="profile-icon-wrap">📸</div>
+            <h3>Photography</h3>
+            <p>Capturing compelling images with a sharp eye for composition, lighting, and storytelling — from product shoots to portraits and events.</p>
+        </div>
+        <div class="profile-card reveal">
+            <div class="profile-num">09</div>
+            <div class="profile-icon-wrap">🎥</div>
+            <h3>Videography</h3>
+            <p>Shooting cinematic footage for brand films, event coverage, reels, and promotional content that tells powerful visual stories.</p>
         </div>
     </div>
 </div>
@@ -787,6 +926,9 @@
             <h2 class="section-title reveal">TOOLS I USE</h2>
         </div>
     </div>
+
+    <!-- Creative Software -->
+    <div class="tools-sub-label reveal">Creative Software</div>
     <div class="software-grid">
         <div class="soft-card reveal">
             <img src="https://img.icons8.com/color/96/adobe-photoshop.png" alt="Photoshop">
@@ -808,9 +950,54 @@
             <img src="https://img.icons8.com/color/96/blender-3d.png" alt="Blender">
             <p>Blender</p>
         </div>
+
         <div class="soft-card reveal">
-            <img src="https://img.icons8.com/color/96/adobe-xd.png" alt="Adobe XD">
-            <p>Adobe XD</p>
+            <img src="https://img.icons8.com/color/96/adobe-lightroom.png" alt="Lightroom">
+            <p>Lightroom</p>
+        </div>
+
+    </div>
+
+    <!-- Meta & Marketing -->
+    <div class="tools-sub-label reveal" style="margin-top:48px;">Meta &amp; Marketing</div>
+    <div class="software-grid">
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/meta.png" alt="Meta">
+            <p>Meta Business</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/facebook-new.png" alt="Facebook Ads">
+            <p>Facebook Ads</p>
+        </div>
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/instagram-new.png" alt="Instagram">
+            <p>Instagram</p>
+        </div>
+
+    </div>
+
+    <!-- AI Tools -->
+    <div class="tools-sub-label reveal" style="margin-top:48px;">AI Tools</div>
+    <div class="software-grid">
+        <div class="soft-card reveal">
+            <img src="https://img.icons8.com/color/96/chatgpt.png" alt="ChatGPT">
+            <p>ChatGPT</p>
+        </div>
+        <div class="soft-card reveal">
+            <div class="ai-badge claude">CL</div>
+            <p>Claude</p>
+        </div>
+        <div class="soft-card reveal">
+            <div class="ai-badge seedance">SD</div>
+            <p>Seedance</p>
+        </div>
+        <div class="soft-card reveal">
+            <div class="ai-badge kling">KL</div>
+            <p>Kling AI</p>
+        </div>
+        <div class="soft-card reveal">
+            <div class="ai-badge eleven">EL</div>
+            <p>ElevenLabs</p>
         </div>
     </div>
 </div>
@@ -853,71 +1040,7 @@
     </div>
 </div>
 
-<div class="hr-line"></div>
 
-<!-- VIDEO WORK -->
-<div class="panel" id="video">
-    <div class="section-header">
-        <div>
-            <p class="section-label">Motion</p>
-            <h2 class="section-title reveal">VIDEO EDITING</h2>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <a href="https://youtube.com/@kccreations2111?si=cwU94-HMJuIiWauE" target="_blank" class="section-link-btn reveal">
-                YouTube
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
-            <a href="https://www.behance.net/gallery/197699011/portfolio" target="_blank" class="section-link-btn reveal">
-                Behance
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
-        </div>
-    </div>
-
-    <!-- Streamable clips -->
-    <div class="grid">
-        <div class="work-item reveal" onclick="openModal('https://streamable.com/e/4zjzk7')">
-            <div class="click-overlay"></div>
-            <div class="video-container">
-                <iframe src="https://streamable.com/e/4zjzk7?muted=1" allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="work-item reveal" onclick="openModal('https://streamable.com/e/0ts1ch')">
-            <div class="click-overlay"></div>
-            <div class="video-container">
-                <iframe src="https://streamable.com/e/0ts1ch?muted=1" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- Behance Portfolio Videos -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Portfolio Reel</h3>
-        <a href="https://www.behance.net/gallery/197699011/portfolio" target="_blank" class="section-link-btn">
-            View on Behance
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-        </a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal behance-video-card" onclick="window.open('https://www.behance.net/gallery/197699011/portfolio','_blank')">
-            <div class="click-overlay"></div>
-            <div class="video-container">
-                <iframe src="https://www-ccv.adobe.io/v1/player/ccv/Ekpohf5vIYK/embed?api_key=behance1&bgcolor=%23111111" allowfullscreen allow="autoplay"></iframe>
-            </div>
-            <div class="video-label">Krithik Chandran — Portfolio Reel</div>
-        </div>
-        <div class="work-item reveal behance-video-card" onclick="window.open('https://www.behance.net/gallery/197699011/portfolio','_blank')">
-            <div class="click-overlay"></div>
-            <div class="video-container">
-                <iframe src="https://www-ccv.adobe.io/v1/player/ccv/Ptrp3Fycnjs/embed?api_key=behance1&bgcolor=%23111111" allowfullscreen allow="autoplay"></iframe>
-            </div>
-            <div class="video-label">Krithik Chandran — Showreel</div>
-        </div>
-    </div>
-</div>
-
-<div class="hr-line"></div>
 
 <!-- GRAPHIC DESIGN -->
 <div class="panel" id="graphics">
@@ -932,67 +1055,56 @@
         </a>
     </div>
 
-    <!-- Vishu Posters -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Vishu Posters</h3>
-        <a href="https://www.behance.net/gallery/247759635/vishu-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg" alt="Vishu Poster 1"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg" alt="Vishu Poster 2"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg" alt="Vishu Poster 3"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg" alt="Vishu Poster 4"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg" alt="Vishu Poster 5"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg" alt="Vishu Poster 6"></div></div>
-    </div>
+    <!-- FILMSTRIP ROWS — Apple TV style -->
+    <div class="filmstrip-wrapper">
 
-    <!-- Easter Wish Poster -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Easter Wish Poster</h3>
-        <a href="https://www.behance.net/gallery/247493121/Easter-wish-poster" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg" alt="Easter Poster 1"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg" alt="Easter Poster 2"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg" alt="Easter Poster 3"></div></div>
-    </div>
+        <!-- Row 1: scrolls LEFT -->
+        <div class="filmstrip-track" id="track1">
+            <div class="filmstrip-inner scroll-left">
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg" alt="Vishu 1"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg" alt="Vishu 2"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg" alt="Vishu 3"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg" alt="Vishu 4"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg" alt="Vishu 5"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg" alt="Vishu 6"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg" alt="Easter 1"><span class="film-label">Easter Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg" alt="Easter 2"><span class="film-label">Easter Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg" alt="Easter 3"><span class="film-label">Easter Posters</span></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/04d91f247759635.69e203a29bcf8.jpg" alt="Vishu 1"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/223f12247759635.69e203a29c4ef.jpeg" alt="Vishu 2"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/437fe9247759635.69e203a29c104.jpg" alt="Vishu 3"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/31c936247759635.69e203a29e169.jpg" alt="Vishu 4"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/3c4579247759635.69e203a29dd92.jpg" alt="Vishu 5"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/c1de40247759635.69e203a29c8a8.jpg" alt="Vishu 6"><span class="film-label">Vishu Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/b31204247493121.69dcab9a6de47.jpg" alt="Easter 1"><span class="film-label">Easter Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/8c4ea6247493121.69dcab9a6f0e0.jpg" alt="Easter 2"><span class="film-label">Easter Posters</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/0b8983247493121.69dcab9a6eb20.jpg" alt="Easter 3"><span class="film-label">Easter Posters</span></div>
+            </div>
+        </div>
 
-    <!-- Vijayadashami Posters -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Vijayadashami Posters</h3>
-        <a href="https://www.behance.net/gallery/235848925/Vijayadashami-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg" alt="Vijayadashami Poster 1"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg" alt="Vijayadashami Poster 2"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg" alt="Vijayadashami Poster 3"></div></div>
-    </div>
+        <!-- Row 2: scrolls RIGHT -->
+        <div class="filmstrip-track" id="track2">
+            <div class="filmstrip-inner scroll-right">
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg" alt="Vijaya 1"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg" alt="Vijaya 2"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg" alt="Vijaya 3"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg" alt="Eid 1"><span class="film-label">Eid Mubarak</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg" alt="Eid 2"><span class="film-label">Eid Mubarak</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg" alt="Special 1"><span class="film-label">Special Day</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg" alt="Special 2"><span class="film-label">Special Day</span></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/43da43235848925.68df92c832cfd.jpg" alt="Vijaya 1"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ef1418235848925.68df92c8335bb.jpg" alt="Vijaya 2"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/cd8a97235848925.68df92c8327fe.jpg" alt="Vijaya 3"><span class="film-label">Vijayadashami</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg" alt="Eid 1"><span class="film-label">Eid Mubarak</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg" alt="Eid 2"><span class="film-label">Eid Mubarak</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg" alt="Special 1"><span class="film-label">Special Day</span></div>
+                <div class="film-card" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg')"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg" alt="Special 2"><span class="film-label">Special Day</span></div>
+            </div>
+        </div>
 
-    <!-- Eid Mubarak Poster -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Eid Mubarak Poster</h3>
-        <a href="https://www.behance.net/gallery/246187285/eid-mubarak-poster" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/ce2d5b246187285.69be82461b5b3.jpg" alt="Eid Poster 1"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/hd/4c007d246187285.69be82461c44d.jpg" alt="Eid Poster 2"></div></div>
-    </div>
-
-    <!-- Special Day Posters -->
-    <div class="subsection-header reveal">
-        <span class="subsection-label">Behance Project</span>
-        <h3 class="subsection-title">Special Day Posters</h3>
-        <a href="https://www.behance.net/gallery/217123507/spical-day-posters" target="_blank" class="section-link-btn">View on Behance <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-    </div>
-    <div class="grid">
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/a57957217123507.678b588801f1f.jpg" alt="Special Day Poster 1"></div></div>
-        <div class="work-item reveal" onclick="openImg('https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg')"><div class="image-wrapper"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/58537c217123507.678b588803a94.jpg" alt="Special Day Poster 2"></div></div>
-    </div>
-
+    </div><!-- /filmstrip-wrapper -->
 </div>
 
 <!-- FOOTER -->
@@ -1005,7 +1117,7 @@
         <a href="https://www.facebook.com/profile.php?id=61585485728810" target="_blank" title="Facebook">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
         </a>
-        <a href="https://wa.me/919656287324?text=Hello%20I%20am%20interested%20in%20your%20services" target="_blank" title="WhatsApp">
+        <a href="https://wa.me/919876543210?text=Hello%20I%20am%20interested%20in%20your%20services" target="_blank" title="WhatsApp">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
         </a>
         <a href="mailto:krithikchandran2111@gmail.com" title="Email">
@@ -1021,7 +1133,7 @@
 <script>
     // Bio typewriter
     // Fast word-by-word reveal — no lag, no per-character spam
-    const bioText = "Hi, I'm Krithik Chandran — a passionate Creative Editor & Designer based in Kerala, India. I specialize in video editing, motion graphics, and graphic design, crafting visuals that tell stories and make brands unforgettable. With a sharp eye for detail and a love for bold aesthetics, I blend technical skill with creative vision to produce work that genuinely stands out.";
+    const bioText = "Hi, I'm Krithik Chandran — a Creative Designer & Digital Strategist based in Kerala, India. I specialise in video editing, motion graphics, graphic design, social media management, digital marketing, photography, and videography. Whether it's crafting a brand identity, managing a social presence, shooting cinematic footage, or leveraging AI tools for cutting-edge content, I blend technical skill with creative vision to produce work that genuinely stands out.";
     const bioElement = document.getElementById('bio-text');
     const words = bioText.split(' ');
     const DELAY_START = 1600;   // ms after page load before first word
